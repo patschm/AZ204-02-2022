@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/js/applicationinsights-web.js"></script>
+</head>
+<body>
+    <h1>Index</h1>
+    <a asp-action="ProductGroups">Product Groups</a>
+
+
+    @* npm i --save @microsoft/applicationinsights-web *@
+    <script>
+        var appInsights = {
+            config: {
+                instrumentationKey: "6f2b25a4-adf9-47a0-810a-755551296338"
+            }
+        };
+        var init = new Microsoft.ApplicationInsights.ApplicationInsights(appInsights);
+        var appInsights = init.loadAppInsights();
+
+        appInsights.trackEvent({ name: 'some event' });
+        appInsights.trackPageView({ name: 'some page' });
+        appInsights.trackPageViewPerformance({ name: 'some page', url: 'some url' });
+        appInsights.trackException({ exception: new Error('some error') });
+        appInsights.trackTrace({ message: 'some trace' });
+        appInsights.trackMetric({ name: 'some metric', average: 42 });
+        appInsights.trackDependencyData({ absoluteUrl: 'some url', responseCode: 200, method: 'GET', id: 'some id' });
+        appInsights.startTrackPage("pageName");
+        appInsights.stopTrackPage("pageName", null, { customProp1: "some value" });
+        appInsights.startTrackEvent("event");
+        appInsights.stopTrackEvent("event", null, { customProp1: "some value" });
+        appInsights.flush();
+    </script>
+</body>
+</html>

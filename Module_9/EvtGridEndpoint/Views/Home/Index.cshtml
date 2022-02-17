@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts
+{
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        let hubConnection;
+       
+        $(document).ready(async function () {
+            hubConnection = new signalR.HubConnectionBuilder().withUrl("/hubs/myhub").build();
+            await hubConnection.start();
+            hubConnection.on("gridupdate", function (id, evtType, subject, evtTime, data) {
+                addEvent(id, evtType, subject, evtTime, data).appendTo("#grid-evts-details");
+            });
+        });
+
+        function addEvent() {
+            let tr$ = $("<tr>");
+            for (let i = 0; i < arguments.length; i++) {
+                $("<td>").text(arguments[i]).appendTo(tr$);
+            }
+            return tr$;
+        }
+    </script>
+}
+
+<h1>Events:</h1>
+<table id="grid-evts">
+    <thead>
+        <tr>
+            <th>Event ID</th>
+            <th>Event Type</th>
+            <th>Subject</th>
+            <th>Event Time</th>
+            <th>Data</th>
+            <h1>Complete Message</h1>
+        </tr>
+    </thead>
+    <tbody id="grid-evts-details">
+    </tbody>
+</table>

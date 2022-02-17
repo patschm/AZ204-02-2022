@@ -1,0 +1,21 @@
+﻿#Create resource group
+az group create --name evtgrid --location westeurope
+
+#deploy EvtGridEndpount project
+
+#If not registered before, register to the eventgrid provide
+az provider register --namespace Microsoft.EventGrid
+
+#Check if succeeded (query case sensitive)
+az provider show --namespace Microsoft.EventGrid --query "registrationState"
+
+#Create a topic (in Portal search for "Event Grid Topic")
+az eventgrid topic create --name psmytopic --location westeurope --resource-group evtgrid
+
+#subscribe to message endpoint
+az eventgrid event-subscription create -g evtgrid --topic-name psmytopic --name psdemo --endpoint https://psevtgrid.azurewebsites.net/api/grid
+#Will change in future to
+az eventgrid event-subscription create 
+	--source-resource-id "/subscriptions/{subscription-id}/resourceGroups/evtgrid/providers/Microsoft.EventGrid/topics/psmytopic" 
+	--name psdemo 
+	--endpoint https://psevtgrid.azurewebsites.net/api/grid

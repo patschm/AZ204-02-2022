@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script type="text/javascript" src="https://alcdn.msftauth.net/lib/1.3.3/js/msal.js"></script>
+</head>
+<body>
+    <h3>For this demo to work make sure you allow implicit flow in App Registration</h3>
+    <img src="implicit.JPG" />
+    <hr/>
+    <h2>
+        <a id="login">Authorize</a>
+    </h2>
+    <button id="call-graph">Call Graph</button>
+    <div id="result">
+
+    </div>
+    <!--With MSAL-->
+    <script src="js/withMsal.js"></script>
+
+    Without MSAL
+    <!--<script type="module">
+        import { parseToken } from "./js/index.js"
+        parseToken();
+    </script>-->
+</body>
+</html>

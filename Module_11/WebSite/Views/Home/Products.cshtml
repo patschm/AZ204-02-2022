@@ -1,0 +1,12 @@
+﻿@model List<Entities.Product>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>@ViewBag.ProductGroup</h1>
+<ul>
+    @foreach(var p in Model)
+    {
+        <li>@p.Brand.Name @p.Name</li>
+    }
+</ul>

@@ -1,0 +1,31 @@
+﻿@model List<Entities.ProductGroup>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>ProductGroups</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label>Link</label>
+            </th>
+            <th>
+                <label>Name</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Products" asp-route-id="@item.ID">Products</a>
+            </td>
+            <td>
+                <span>@item.Name</span>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
