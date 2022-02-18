@@ -21,13 +21,13 @@ namespace KeyVault
     class Program
     {
         static string tenentId = "030b09d5-7f0f-40b0-8c01-03ac319b2d71";
-        static string clientId = "cc1a6d20-23fe-4803-8046-f6c02e3bf61f";
-        static string clientSecret = "DqX7Q~FxjZhn27LoPSIv4krNpvKGQ1yD5i0wv";
-        static string kvUri = "https://ps-sleutelbossen.vault.azure.net/";
+        static string clientId = "28ecd1c7-059d-40a4-86b9-2f04ab4f9178";
+        static string clientSecret = "kId7Q~q85nbDqbIcnwx2wUOASMfjpacKzkE0Z";
+        static string kvUri = "https://ps-sleutelhanger.vault.azure.net/";
         
         static async Task Main(string[] args)
         {
-           // await ReadKeyVault();
+            //await ReadKeyVault();
             await ReadAppConfigurationAsync();
 
             Console.WriteLine("Done");
@@ -35,10 +35,12 @@ namespace KeyVault
         }
         private static async Task ReadKeyVault()
         {
+        //https://ps-sleutelhanger.vault.azure.net/secrets/mijngeheim/e8641ead975f4c81bdcbeba4a9bdf548
             ClientSecretCredential cred = new ClientSecretCredential(tenentId, clientId, clientSecret);
+
             SecretClient kvClient = new SecretClient(new Uri(kvUri), cred);
-                
-            var result = await kvClient.GetSecretAsync("MijnGeheim");
+   
+            var result = await kvClient.GetSecretAsync("mijngeheim");
             Console.WriteLine($"Hello {result.Value?.Value}");
         }
 
@@ -51,7 +53,7 @@ namespace KeyVault
 
            
 
-            //ReadLocal();
+            ReadLocal();
             await ReadRemoteAsync();
 
             void ReadLocal()
@@ -67,12 +69,11 @@ namespace KeyVault
                     {
                         kvopts.SetCredential(new ClientSecretCredential(tenentId, clientId, clientSecret));
                     });
-                    opts.Connect(configuration["ConnectionString"]);    
-                   
+                    opts.Connect(configuration["ConnectionString"]).UseFeatureFlags();
                 });
                 IConfiguration conf = builder.Build();
 
-                Console.WriteLine($"{conf["Production:Connectionstring"]}");
+                Console.WriteLine($"{conf["APP:Development:key"]}");
                 Console.WriteLine($"Hello {conf["Sleute"]}");
 
                 IServiceCollection services = new ServiceCollection();
@@ -81,6 +82,12 @@ namespace KeyVault
                 using (var svcProvider = services.BuildServiceProvider())
                 {
                     var featureManager = svcProvider.GetRequiredService<IFeatureManager>();
+
+                    //featureManager.
+                    await foreach (var item in featureManager.GetFeatureNamesAsync())
+                    {
+                        //Console.WriteLine(item);
+                    }
                     if (await featureManager.IsEnabledAsync("test"))
                     {
                         Console.WriteLine("We have a new feature");

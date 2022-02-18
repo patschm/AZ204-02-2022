@@ -1,0 +1,35 @@
+<html>
+    <head></head>
+    <body>
+        <h1>Welkom</h1>
+        <a href="https://login.microsoftonline.com/030b09d5-7f0f-40b0-8c01-03ac319b2d71/oauth2/v2.0/authorize?
+        client_id=28ecd1c7-059d-40a4-86b9-2f04ab4f9178
+        &response_type=token
+        &redirect_uri=https://localhost:7207/index.html
+        &scope=api://28ecd1c7-059d-40a4-86b9-2f04ab4f9178/Access
+        &response_mode=fragment
+        &state=12345
+        &nonce=678910">Login</a>
+
+        <h2 id="result"></h2>
+        <script>
+            let h22 = document.getElementById("result");
+            let enpar = document.location.hash.split("&");
+            let tokenarr = enpar[0].split("=");
+            let token = tokenarr[1];
+
+            fetch("https://localhost:7295/weatherforecast", {
+                "headers":{
+                    "Authorization": "Bearer " + token
+                }
+            }).then(
+                isgoe=>{
+                    h22.innerText = isgoe;
+                },
+                err=>h22.innerText = err
+            );
+
+            h22.innerText = token;
+        </script>
+    </body>
+</html>

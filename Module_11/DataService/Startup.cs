@@ -25,7 +25,7 @@ namespace DataService
 
         public void ConfigureServices(IServiceCollection services)
         {                
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddCors(opts => {
                 opts.AddPolicy("all", cp => {
